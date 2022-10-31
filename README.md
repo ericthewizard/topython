@@ -47,7 +47,7 @@ def create_tplot_variable(name, suffix='_out'):
 
 Note: this is the raw output from the function, nothing was added or changed.
 
-By default, it includes a header, even though there wasn't one in the input! This is because we showed the model an example of a header prior to requesting the conversion. 
+Not only does it produce correct code - it includes a header, even though there wasn't one in the input! This is because we showed the model an example of a header prior to requesting the conversion. 
 
 To turn off the header, use the `header` option:
 
