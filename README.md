@@ -18,6 +18,8 @@ end
 and using:
 
 ```python
+from topython import convert
+
 output = convert(input, raw=True)
 ```
 
@@ -42,6 +44,8 @@ def create_tplot_variable(name, suffix='_out'):
     store_data(name + suffix, data={'x': d.times, 'y': d.y})
 
 ```
+
+Note: this is the raw output from the function, nothing was added or changed.
 
 By default, it includes a header, even though there wasn't one in the input! This is because we showed the model an example of a header prior to requesting the conversion. 
 
