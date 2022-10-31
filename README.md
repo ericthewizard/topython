@@ -4,6 +4,19 @@ Tools for converting scientific software from IDL to Python
 ### Requirements
 openai
 
+### Getting Started
+The model this code uses is still in private beta, so you'll need an invite prior to using it; request an invite here:
+
+https://openai.com/blog/openai-codex/
+
+Once you've accepted the invite, install the latest openai library:
+
+```bash
+pip install openai
+```
+
+then set your `OPENAI_API_KEY` environment variable.
+
 ### Examples
 
 Starting with the input:
