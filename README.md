@@ -77,3 +77,31 @@ def create_tplot_variable(name, suffix=None):
     d = get_data(name)
     store_data(name + suffix, data={'x': d.times, 'y': d.y})
 ```
+
+Now for the magic - changing our input to:
+
+```idl
+; function that uses get_data to return the data for an input variable, and store_data to save the data with a suffix
+```
+
+and again using:
+
+```python
+output = convert(input, raw=True, header=False)
+```
+
+We get:
+
+```python
+
+def get_and_store_data(variable, suffix):
+    data = get_data(variable)
+    if data is not None:
+        store_data(variable + suffix, data={'x': data.times, 'y': data.y})
+
+get_and_store_data('variable', '_suffix')
+get_and_store_data('variable2', '_suffix')
+
+```
+
+🤯 🤯 🤯
