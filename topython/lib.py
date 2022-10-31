@@ -75,15 +75,22 @@ def get_prompt(text, header=False):
 
 
 def convert(file,
+            raw=False,
             max_tokens=4096,
             best_of=5,
             header=True,
             dynamic_tokens=True,
             token_padding=0.61,
             tmp_output=False):
-    directory, filename = os.path.split(file)
-    out_file = filename[:-4] + '.py'
-    filetxt = open(file, 'r').read()
+    """
+
+    """
+    if not raw:
+        directory, filename = os.path.split(file)
+        out_file = filename[:-4] + '.py'
+        filetxt = open(file, 'r').read()
+    else:
+        filetxt = file
 
     if header:
         logging.info('including header example...')
@@ -132,7 +139,7 @@ def convert(file,
             logging.info('removing excess at the end of the output...')
             output = output[:output.find('IDL:\n')]
 
-        if tmp_output:
+        if tmp_output and not raw:
             # useful for debugging strange output
             with open(os.path.join(directory, filename[:-4] + '_tmp_full_' + str(index) + '.py'), 'w') as f:
                 f.write(full_output)
@@ -142,6 +149,9 @@ def convert(file,
                 f.write(prompt)
 
         out = out + '\n\n' + output
+
+    if raw:
+        return out
 
     with open(os.path.join(directory, out_file), 'w') as f:
         f.write(out)
