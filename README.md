@@ -81,7 +81,8 @@ def create_tplot_variable(name, suffix=None):
 Now for the magic - changing our input to:
 
 ```idl
-; function that uses get_data to return the data for an input variable, and store_data to save the data with a suffix
+; function that uses get_data to return the data for an input variable, 
+; and store_data to save the data with a suffix
 ```
 
 and again using:
@@ -105,3 +106,75 @@ get_and_store_data('variable2', '_suffix')
 ```
 
 🤯 🤯 🤯
+
+We can modify the input slightly to ask for a docstring:
+
+```idl
+; function that uses get_data to return the data for an input variable, 
+; and store_data to save the data with a suffix, with a docstring
+```
+
+and again using:
+
+```python
+output = convert(input, raw=True, header=False)
+```
+
+We get:
+
+```python
+def get_and_store_data(variable, suffix):
+    """
+    Get the data for a variable and store it with a suffix.
+
+    Parameters
+    ----------
+    variable : str
+        The variable to get the data for.
+    suffix : str
+        The suffix to add to the variable name when storing the data.
+
+    Returns
+    -------
+    data : dict
+        The data for the variable.
+    """
+    data = get_data(variable)
+    if data is not None:
+        store_data(variable + suffix, data={'x': data.times, 'y': data.y})
+    return data
+```
+
+The only problem is in the 'Returns' section of the docstring: `get_data` returns a named tuple, not a dictionary. We usually return the name of the variable created, so we can change our IDL comment slightly ask for that:
+
+
+```idl
+; function that uses get_data to return the data for an input variable, 
+; and store_data to save the data with a suffix, with a docstring,
+; that returns the output variable name
+```
+
+This returns a working function, with a correct docstring:
+
+```python
+def get_and_store_data(variable, suffix):
+    """
+    Get data for a variable and store it with a suffix.
+
+    Parameters
+    ----------
+    variable : str
+        The variable to get data for.
+    suffix : str
+        The suffix to add to the variable name when storing the data.
+
+    Returns
+    -------
+    str
+        The name of the variable that the data was stored in.
+    """
+    data = get_data(variable)
+    if data is not None:
+        store_data(variable + suffix, data={'x': data.times, 'y': data.y})
+    return variable + suffix
+```
