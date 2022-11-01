@@ -104,6 +104,8 @@ def convert(file,
         logging.info('item #' + str(index + 1))
         prompt = get_prompt(item, header=header)
 
+        initial_estimate = max_tokens
+
         if dynamic_tokens:
             initial_estimate = estimate_tokens(prompt)
             logging.info('initial estimate of number of tokens: ' + str(int(initial_estimate)))
@@ -113,7 +115,7 @@ def convert(file,
         else:
             num_tokens = max_tokens
 
-        if num_tokens * 2 > 8001:
+        if num_tokens * 2 > 8001 and dynamic_tokens:
             num_tokens = 8001 - (initial_estimate + initial_estimate * token_padding)
             logging.info('limiting the number of output tokens: ' + str(int(num_tokens)))
 
