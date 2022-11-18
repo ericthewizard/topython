@@ -4,7 +4,14 @@ import os
 import openai
 from .prompts import PROMPT_START, PROMPT_HEADER, prompts
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+
+KEY = os.getenv('OPENAI_API_KEY')
+
+if KEY is None:
+    logging.error('Can not find API key; please set the "OPENAI_API_KEY" environment variable and restart.')
+    breakpoint()
+
+openai.api_key = KEY
 logging.basicConfig(format='%(asctime)s: %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO)
 
 
