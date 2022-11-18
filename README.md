@@ -17,6 +17,24 @@ pip install openai
 
 then set your `OPENAI_API_KEY` environment variable.
 
+### Usage
+To convert some code to Python, simply call the `topython.convert` function with the code to convert as the argument:
+
+```python
+from topython import convert
+output = convert('/path/to/idl/file/my_code.pro')
+```
+
+By default, the `convert` function works on a .pro file; to submit raw code instead of a file, set the `raw` keyword to `True`.
+
+### Optional Parameters
+- `raw`: set to `True` if the input is code in a string instead of a file
+- `header`: set to `True` (default) to include an example of an IDL header and PySPEDAS docstring to the model prior to doing the conversion (will include a proper docstring). Setting this option to `False` will allow you to convert slightly larger functions/procedures.
+- `dynamic_tokens`: set to `True` (default) for the conversion to attempt to guess the maximum number of output tokens from the number of input tokens (significantly improves output and will limit costs when this becomes a paid product).
+- `max_tokens`: specify the exact number of output tokens (dynamic_tokens must be set to `False` to use this option)
+- `token_padding`: amount of padding to add to the output tokens from the input tokens (if dynamic_tokens is set to `True`); default: 0.61 (or 61% more tokens than the input)
+- `best_of`: integer specifying the number of times inference is ran on the model (default: 5); higher means better conversions, but with larger functions, the max seems to be around 5 before the model starts throwing rate limit errors. Decreasing this should decrease the cost when the model becomes a paid product. Note: 1-2 seems to do a decent job, but the default is set to 5 to try to get the best output. 
+
 ### Examples
 
 Starting with the input:
@@ -178,3 +196,7 @@ def get_and_store_data(variable, suffix):
         store_data(variable + suffix, data={'x': data.times, 'y': data.y})
     return variable + suffix
 ```
+
+### Caveats
+- The upper limit seems to be around 200 lines per function/procedure (depending on line density), or around 10KB
+- Due to the caveat above, when converting files with multiple proceudres or functions, the `convert` routine will attempt to split the file up into individual functions, and send each one to the model independently. This splitting is based on 'end's in the IDL code, so if your functions include 'end's that aren't proper procedure/function 'end's (e.g., if you use 'end' to end an 'if' statement instead of 'endif'), you'll get some bad results; exception: 'end's that exist inside 'case' statements should be fine. 
