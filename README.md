@@ -30,7 +30,7 @@ By default, the `convert` function works on a .pro file; to submit raw code inst
 ### Optional Parameters
 - `raw`: set to `True` if the input is code in a string instead of a file
 - `header`: set to `True` (default) to include an example of an IDL header and PySPEDAS docstring to the model prior to doing the conversion (will include a proper docstring). Setting this option to `False` will allow you to convert slightly larger functions/procedures.
-- `dynamic_tokens`: set to `True` (default) for the conversion to attempt to guess the maximum number of output tokens from the number of input tokens (significantly improves output and will limit costs when this becomes a paid product).
+- `dynamic_tokens`: set to `True` (default) for the conversion to attempt to guess the maximum number of output tokens from the number of input tokens (significantly improves output and will limit costs when the model becomes a paid product).
 - `max_tokens`: specify the exact number of output tokens (dynamic_tokens must be set to `False` to use this option)
 - `token_padding`: amount of padding to add to the output tokens from the input tokens (if dynamic_tokens is set to `True`); default: 0.61 (or 61% more tokens than the input)
 - `best_of`: integer specifying the number of times inference is ran on the model (default: 5); higher means better conversions, but with larger functions, the max seems to be around 5 before the model starts throwing rate limit errors. Decreasing this should decrease the cost when the model becomes a paid product. Note: 1-2 seems to do a decent job, but the default is set to 5 to try to get the best output. 
