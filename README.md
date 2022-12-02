@@ -17,6 +17,9 @@ pip install openai
 
 then set your `OPENAI_API_KEY` environment variable.
 
+### Cost
+Access to the OpenAI Codex model is free (as of November 2022) while in private beta, but will become a paid product once it's made available to the public. 
+
 ### Usage
 To convert some code to Python, simply call the `topython.convert` function with the code to convert as the argument:
 
