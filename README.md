@@ -5,11 +5,7 @@ Tools for converting scientific software from IDL to Python
 openai
 
 ### Getting Started
-The model this code uses is still in private beta, so you'll need an invite prior to using it; request an invite here:
-
-https://openai.com/blog/openai-codex/
-
-Once you've accepted the invite, install the latest openai library:
+To get started, install the latest openai library:
 
 ```bash
 pip install openai
@@ -18,7 +14,11 @@ pip install openai
 then set your `OPENAI_API_KEY` environment variable.
 
 ### Cost
-Access to the OpenAI Codex model is free (as of November 2022) while in private beta, but will become a paid product once it's made available to the public. 
+This code uses the `gpt-3.5-turbo` model; see: 
+
+https://openai.com/pricing
+
+For pricing information (as of March 2023, the cost is $0.002 / 1K tokens)
 
 ### Usage
 To convert some code to Python, simply call the `topython.convert` function with the code to convert as the argument:
@@ -32,11 +32,6 @@ By default, the `convert` function works on a .pro file; to submit raw code inst
 
 ### Optional Parameters
 - `raw`: set to `True` if the input is code in a string instead of a file
-- `header`: set to `True` (default) to include an example of an IDL header and PySPEDAS docstring to the model prior to doing the conversion (will include a proper docstring). Setting this option to `False` will allow you to convert slightly larger functions/procedures.
-- `dynamic_tokens`: set to `True` (default) for the conversion to attempt to guess the maximum number of output tokens from the number of input tokens (significantly improves output and will limit costs when the model becomes a paid product).
-- `max_tokens`: specify the exact number of output tokens (dynamic_tokens must be set to `False` to use this option)
-- `token_padding`: amount of padding to add to the output tokens from the input tokens (if dynamic_tokens is set to `True`); default: 0.61 (or 61% more tokens than the input)
-- `best_of`: integer specifying the number of times inference is ran on the model (default: 5); higher means better conversions, but with larger functions, the max seems to be around 5 before the model starts throwing rate limit errors. Decreasing this should decrease the cost when the model becomes a paid product. Note: 1-2 seems to do a decent job, but the default is set to 5 to try to get the best output. 
 
 ### Examples
 

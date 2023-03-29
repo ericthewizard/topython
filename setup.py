@@ -8,6 +8,6 @@ setup(name='topython',
       author_email='egrimes@igpp.ucla.edu',
       url='https://github.com/supervised/topython/',
       packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-      install_requires=['openai'],
+      install_requires=['openai>=0.27.2'],
       python_requires='>=3.7',
      )

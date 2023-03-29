@@ -109,44 +109,18 @@ def convert(file,
 
     for index, item in enumerate(items):
         logging.info('item #' + str(index + 1))
-        prompt = get_prompt(item, header=header)
+        # prompt = get_prompt(item, header=header)
 
-        initial_estimate = max_tokens
-
-        if dynamic_tokens:
-            initial_estimate = estimate_tokens(prompt)
-            logging.info('initial estimate of number of tokens: ' + str(int(initial_estimate)))
-            num_tokens = initial_estimate
-            num_tokens += token_padding * num_tokens
-            logging.info('approximate number of output tokens: ' + str(int(num_tokens)))
-        else:
-            num_tokens = max_tokens
-
-        if num_tokens * 2 > 8001 and dynamic_tokens:
-            num_tokens = 8001 - (initial_estimate + initial_estimate * token_padding)
-            logging.info('limiting the number of output tokens: ' + str(int(num_tokens)))
-
-        logging.info('estimate of the total number of tokens (input + output): ' + str(
-            int(num_tokens + initial_estimate + initial_estimate * token_padding)))
-
-        response = openai.Completion.create(
-            model="code-davinci-002",
-            prompt=prompt,
-            temperature=0,
-            max_tokens=int(num_tokens),
-            top_p=1.0,
-            frequency_penalty=0.0,
-            presence_penalty=0.0,
-            best_of=best_of
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are an expert scientific programmer, with detailed knowledge of Interactive Data Language (IDL) and Python. Your sole purpose in life is to convert IDL code to Python code. The user provides some IDL and Python examples, followed by some IDL code, and you return the Python code."},
+                {"role": "user", "content": f"The code is:\n{item}"},
+            ]
         )
 
-        output = response['choices'][0]['text']
+        output = response['choices'][0]['message']['content']
         full_output = output
-
-        # search for excess code at the end
-        if 'IDL:\n' in output:
-            logging.info('removing excess at the end of the output...')
-            output = output[:output.find('IDL:\n')]
 
         if tmp_output and not raw:
             # useful for debugging strange output
@@ -154,8 +128,8 @@ def convert(file,
                 f.write(full_output)
             with open(os.path.join(directory, filename[:-4] + '_tmp_' + str(index) + '.py'), 'w') as f:
                 f.write(output)
-            with open(os.path.join(directory, filename[:-4] + '_prompt_' + str(index) + '.pro'), 'w') as f:
-                f.write(prompt)
+            # with open(os.path.join(directory, filename[:-4] + '_prompt_' + str(index) + '.pro'), 'w') as f:
+            #     f.write(prompt)
 
         out = out + '\n\n' + output
 
